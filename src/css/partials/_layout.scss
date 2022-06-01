@@ -1,0 +1,97 @@
+$container-xl: 1440px;
+$container-l: 1216px;
+$container-m: 960px;
+$container-s: 620px;
+$container-xs: 340px;
+$gutter: 32px;
+
+@mixin responsive($device) {
+    @if $device == xl {
+        @media screen and (min-width: $container-xl) {
+            @content;
+        }
+    } @else if $device == ul {
+        @media screen and (min-width: $container-m) {
+            @content;
+        }
+    } @else if $device == l {
+        @media screen and (max-width: $container-xl) and (min-width: $container-l) {
+            @content;
+        }
+    } @else if $device == m {
+        @media screen and(max-width:$container-l) and (min-width: $container-s) {
+            @content;
+        }
+    } @else if $device == s {
+        @media screen and (max-width: $container-m) {
+            @content;
+        }
+    } @else if $device == xs {
+        @media screen and (max-width: $container-xl) {
+            @content;
+        }
+    }
+}
+
+@function grid($col, $total: 12) {
+    @return ($col / $total) * 100%;
+}
+
+@for $i from 1 through 12 {
+    .grid-#{$i} {
+        width: calc(#{grid($i)} - #{$gutter});
+        margin: $gutter / 2;
+        padding: 16px 0px;
+        float: left;
+
+        @include responsive(s) {
+            width: calc(100% - #{$gutter});
+            float: none;
+        }
+    }
+}
+
+@for $i from 1 through 12 {
+    .grid-nobreak-#{$i} {
+        width: calc(#{grid($i)} - #{$gutter});
+        margin: $gutter / 2;
+        padding: 16px 0px;
+        float: left;
+    }
+}
+
+.container {
+    max-width: $container-l;
+    margin: 0 auto;
+    padding: 128px 24px;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    @include responsive(s) {
+        flex-direction: column;
+        padding: 96px 16px;
+    }
+}
+
+.hero {
+    height: 70vh;
+}
+
+.disappear {
+    @include responsive(s) {
+        display: none;
+    }
+}
+
+.row {
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
